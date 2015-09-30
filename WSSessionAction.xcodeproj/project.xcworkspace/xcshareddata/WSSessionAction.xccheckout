@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D6EA6AA4-F798-4194-B3F6-5DEC3FC01574</string>
+	<key>IDESourceControlProjectName</key>
+	<string>WSSessionAction</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>81DF246215137B27F2323C619162DC9D5B060170</key>
+		<string>github.com:Crebs/WSSessionAction.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>WSSessionAction.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>81DF246215137B27F2323C619162DC9D5B060170</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:Crebs/WSSessionAction.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>81DF246215137B27F2323C619162DC9D5B060170</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>81DF246215137B27F2323C619162DC9D5B060170</string>
+			<key>IDESourceControlWCCName</key>
+			<string>WSSessionAction</string>
+		</dict>
+	</array>
+</dict>
+</plist>
