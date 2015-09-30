@@ -42,6 +42,7 @@
     } failure:^(NSError *error) {
         XCTAssertNil(error);
     }];
+    XCTAssertNotNil(operation);
     XCTAssertTrue(successCompletion);
 }
 
@@ -56,6 +57,7 @@
                                                                                          errorComplete = YES;
                                                                                          XCTAssertNotNil(error);
                                                                                      }];
+    XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
 }
 
@@ -71,6 +73,7 @@
                                                                                          XCTAssertNotNil(error);
                                                                                          XCTAssertEqualObjects(error.domain, @"MockDomain");
                                                                                      }];
+    XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
 }
 #pragma mark - Helper
