@@ -15,5 +15,6 @@ FOUNDATION_EXPORT double WSSessionActionVersionNumber;
 FOUNDATION_EXPORT const unsigned char WSSessionActionVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <WSSessionAction/PublicHeader.h>
-
+#import <WSSessionAction/WSSessionTaskDataOperation.h>
+#import <WSSessionActoin/WSActionProtocol.h>
 

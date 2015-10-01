@@ -12,9 +12,9 @@
 		237BDD831BBC88CA00516086 /* WSSessionActionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD821BBC88CA00516086 /* WSSessionActionTests.m */; };
 		237BDD921BBC88E500516086 /* NSMutableURLRequest+WSAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD8C1BBC88E500516086 /* NSMutableURLRequest+WSAPI.h */; };
 		237BDD931BBC88E500516086 /* NSMutableURLRequest+WSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD8D1BBC88E500516086 /* NSMutableURLRequest+WSAPI.m */; };
-		237BDD941BBC88E500516086 /* WSActionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD8E1BBC88E500516086 /* WSActionProtocol.h */; };
+		237BDD941BBC88E500516086 /* WSActionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD8E1BBC88E500516086 /* WSActionProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		237BDD951BBC88E500516086 /* WSAPIConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD8F1BBC88E500516086 /* WSAPIConstants.h */; };
-		237BDD961BBC88E500516086 /* WSSessionTaskDataOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD901BBC88E500516086 /* WSSessionTaskDataOperation.h */; };
+		237BDD961BBC88E500516086 /* WSSessionTaskDataOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 237BDD901BBC88E500516086 /* WSSessionTaskDataOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		237BDD971BBC88E500516086 /* WSSessionTaskDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD911BBC88E500516086 /* WSSessionTaskDataOperation.m */; };
 		237BDD9B1BBC88FE00516086 /* NSMutableURLRequest+WSAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD981BBC88FE00516086 /* NSMutableURLRequest+WSAPITests.m */; };
 		237BDD9D1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD9A1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m */; };
