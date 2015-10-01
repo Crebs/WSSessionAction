@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol WSActionProtocol;
+
+typedef void (^WSAPICompletionBlock)(id response);
+typedef void (^WSAPIFailureBlock)(NSError* error);
+typedef void (^WSAPICancelBlock)();
+typedef void (^WSAPIAuthenticateBlock)(id<WSActionProtocol> action, WSAPICompletionBlock completionBlock, WSAPIFailureBlock failureBlock);
+
 //! Project version number for WSSessionAction.
 FOUNDATION_EXPORT double WSSessionActionVersionNumber;
 
