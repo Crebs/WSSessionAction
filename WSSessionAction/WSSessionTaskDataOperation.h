@@ -29,6 +29,8 @@ extern NSString * const WSAPIErrorDomain;
                         failure:(WSAPIFailureBlock)failureBlock;
 
 @property (nonatomic, weak) id<WSSessionTaskDataOperationProtocol>delegate;
+@property (nonatomic, strong) NSString *scheme;
+@property (nonatomic, strong) NSString *baseURL;
 
 @end
 
