@@ -35,6 +35,7 @@
     _mockResponse = @{@"data": data};
     __block BOOL successCompletion = NO;
     WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
+                                                                                       delegate:self
                                                                                          action:self
                                                                                      completion:^(id response) {
         successCompletion = YES;
@@ -49,6 +50,7 @@
     _mockResponse = @{@"data": [@"<html>data here</html>" dataUsingEncoding:NSUTF8StringEncoding]};
     __block BOOL errorComplete = NO;
     WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
+                                                                                       delegate:self
                                                                                          action:self
                                                                                      completion:^(id response) {
                                                                                          XCTAssertFalse(true);
@@ -64,6 +66,7 @@
     _mockResponse = @{@"data": [NSNull null]};
     __block BOOL errorComplete = NO;
     WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
+                                                                                       delegate:self
                                                                                          action:self
                                                                                      completion:^(id response) {
                                                                                          XCTAssertFalse(true);
@@ -74,25 +77,6 @@
                                                                                      }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
-}
-
-- (void)testDelegate_WhenSet_ShouldSuccessed {
-    NSError *error;
-    NSData* data = [NSJSONSerialization dataWithJSONObject:@{@"numbers" :@[@1, @2]}
-                                                   options:0
-                                                     error:&error];
-    _mockResponse = @{@"data": data};
-    __block BOOL successCompletion = NO;
-    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
-                                                                                         action:self
-                                                                                     completion:^(id response) {
-                                                                                         successCompletion = YES;
-                                                                                     } failure:^(NSError *error) {
-                                                                                         XCTAssertNil(error);
-                                                                                     }];
-    operation.delegate = self;
-    XCTAssertNotNil(operation);
-    XCTAssertTrue(successCompletion);
 }
 
 #pragma mark - WSSessionTaskDataOperationDelegate 

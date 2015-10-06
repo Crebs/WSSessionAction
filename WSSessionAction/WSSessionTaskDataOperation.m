@@ -42,10 +42,12 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 }
 
 - (instancetype)initWithSession:(NSURLSession*)session
+                       delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
                          action:(id<WSActionProtocol>)action
                      completion:(WSAPICompletionBlock)completionBlock
                         failure:(WSAPIFailureBlock)failureBlock {
     if (self = [super init]) {
+        _delegate = delegate;
         // Create session task
         NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -92,9 +94,11 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 - (BOOL)isValidResponseData:(NSDictionary*)dict
                       action:(id<WSActionProtocol>)action
                       error:(NSError *__autoreleasing *)error{
-    [self.delegate validateResponseData:dict
-                                 action:action
-                                  error:error];
+    if ([self.delegate respondsToSelector:@selector(validateResponseData:action:error:)]) {
+        [self.delegate validateResponseData:dict
+                                     action:action
+                                      error:error];
+    }
     return *error == nil;
 }
 

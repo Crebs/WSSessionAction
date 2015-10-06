@@ -24,6 +24,7 @@ extern NSString * const WSAPIErrorDomain;
 @interface WSSessionTaskDataOperation : NSOperation
 
 - (instancetype)initWithSession:(NSURLSession*)session
+                       delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
                          action:(id<WSActionProtocol>)action
                      completion:(WSAPICompletionBlock)completionBlock
                         failure:(WSAPIFailureBlock)failureBlock;
