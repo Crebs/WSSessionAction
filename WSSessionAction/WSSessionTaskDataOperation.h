@@ -29,13 +29,15 @@ extern NSString * const WSAPIErrorDomain;
                         failure:(WSAPIFailureBlock)failureBlock;
 
 @property (nonatomic, weak) id<WSSessionTaskDataOperationProtocol>delegate;
-@property (nonatomic, strong) NSString *scheme;
-@property (nonatomic, strong) NSString *baseURL;
 
 @end
 
 @protocol WSSessionTaskDataOperationProtocol <NSObject>
 @required
+- (NSString*)baseURL;
+- (NSString*)scheme;
+
+@optional
 - (void)taskDataOperation:(WSSessionTaskDataOperation*)operation
      invalidTokenOnAction:(id<WSActionProtocol>)action
                completion:(WSAPICompletionBlock)completionBlock

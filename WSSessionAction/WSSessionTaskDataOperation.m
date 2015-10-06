@@ -107,7 +107,7 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 }
 
 - (NSURL*)urlFromAction:(id<WSActionProtocol>)action {
-    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@:/%@/%@", self.scheme, self.baseURL, action.endpoint]];
+    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"%@:/%@/%@", self.delegate.scheme, self.delegate.baseURL, action.endpoint]];
     return url;
 }
 @end

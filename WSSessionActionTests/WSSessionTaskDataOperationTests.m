@@ -11,7 +11,7 @@
 #import "WSSessionTaskDataOperation.h"
 #import "WSActionProtocol.h"
 
-@interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol>
+@interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol, WSSessionTaskDataOperationProtocol>
 @property (nonatomic, strong, readonly) WSSessionTaskDataOperation *sessionOperation;
 @property (nonatomic, strong, readonly) NSDictionary *mockResponse;
 @end
@@ -20,7 +20,6 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
@@ -76,6 +75,34 @@
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
 }
+
+- (void)testDelegate_WhenSet_ShouldSuccessed {
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:@{@"numbers" :@[@1, @2]}
+                                                   options:0
+                                                     error:&error];
+    _mockResponse = @{@"data": data};
+    __block BOOL successCompletion = NO;
+    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
+                                                                                         action:self
+                                                                                     completion:^(id response) {
+                                                                                         successCompletion = YES;
+                                                                                     } failure:^(NSError *error) {
+                                                                                         XCTAssertNil(error);
+                                                                                     }];
+    operation.delegate = self;
+    XCTAssertNotNil(operation);
+    XCTAssertTrue(successCompletion);
+}
+
+#pragma mark - WSSessionTaskDataOperationDelegate 
+- (NSString*)baseURL {
+    return @"foo.com";
+}
+
+- (NSString*)scheme {
+    return @"bar";
+}
 #pragma mark - Helper
 - (id)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
     NSError *error;
@@ -105,4 +132,7 @@
 - (void)resume {
     
 }
+
+// TODO: test Delegate
+
 @end
