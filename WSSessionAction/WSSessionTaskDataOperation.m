@@ -20,6 +20,9 @@ static NSInteger const kDefaultTimeOut = 3 * 60; //3 minutes
 
 NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 
+@interface WSSessionTaskDataOperation ()
+@property (nonatomic, strong) id <WSActionProtocol>action;
+@end
 
 
 @implementation WSSessionTaskDataOperation
@@ -47,6 +50,7 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
                      completion:(WSAPICompletionBlock)completionBlock
                         failure:(WSAPIFailureBlock)failureBlock {
     if (self = [super init]) {
+        _action = action;
         _delegate = delegate;
         // Create session task
         NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
