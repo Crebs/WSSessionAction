@@ -20,6 +20,7 @@
 		237BDD9D1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD9A1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m */; };
 		237BDD9F1BBC891F00516086 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 237BDD9E1BBC891F00516086 /* Cartfile */; };
 		237DD2651C06A6A100F8F736 /* WSFXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD2641C06A6A100F8F736 /* WSFXReachability.framework */; };
+		237DD26B1C06B06400F8F736 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD26A1C06B06400F8F736 /* libOCMock.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		237BDD9A1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSessionTaskDataOperationTests.m; sourceTree = "<group>"; };
 		237BDD9E1BBC891F00516086 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		237DD2641C06A6A100F8F736 /* WSFXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WSFXReachability.framework; path = Carthage/Build/iOS/WSFXReachability.framework; sourceTree = "<group>"; };
+		237DD26A1C06B06400F8F736 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = WSSessionActionTests/OCMock/libOCMock.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237DD26B1C06B06400F8F736 /* libOCMock.a in Frameworks */,
 				237BDD7C1BBC88CA00516086 /* WSSessionAction.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,11 +77,11 @@
 		237BDD661BBC88CA00516086 = {
 			isa = PBXGroup;
 			children = (
-				237DD2641C06A6A100F8F736 /* WSFXReachability.framework */,
 				237BDD9E1BBC891F00516086 /* Cartfile */,
 				237BDD721BBC88CA00516086 /* WSSessionAction */,
 				237BDD7F1BBC88CA00516086 /* WSSessionActionTests */,
 				237BDD711BBC88CA00516086 /* Products */,
+				237DD2671C06AB8200F8F736 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -131,6 +134,15 @@
 				237BDD811BBC88CA00516086 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		237DD2671C06AB8200F8F736 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				237DD26A1C06B06400F8F736 /* libOCMock.a */,
+				237DD2641C06A6A100F8F736 /* WSFXReachability.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -389,9 +401,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = WSSessionAction/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OCMock",
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -409,9 +427,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = WSSessionAction/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OCMock",
+				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -429,8 +453,14 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/WSSessionActionTests/OCMock";
 				INFOPLIST_FILE = WSSessionActionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WSSessionActionTests/OCMock",
+				);
+				OTHER_LDFLAGS = "-Objc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -443,8 +473,14 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/WSSessionActionTests/OCMock";
 				INFOPLIST_FILE = WSSessionActionTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WSSessionActionTests/OCMock",
+				);
+				OTHER_LDFLAGS = "-Objc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

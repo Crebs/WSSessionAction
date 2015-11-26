@@ -11,7 +11,7 @@
 #import "WSActionProtocol.h"
 #import "NSMutableURLRequest+WSAPI.h"
 
-//#import <FXReachability/FXReachability.h>
+#import <WSFXReachability/FXReachability.h>
 
 #define kPoductionBaseURL @"api.wellspentapp.com"
 #define kPoductionScheme @"https"
@@ -22,11 +22,53 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 
 @interface WSSessionTaskDataOperation ()
 @property (nonatomic, strong) id <WSActionProtocol>action;
+@property (nonatomic, strong) FXReachability *reachability;
 @end
 
 
 @implementation WSSessionTaskDataOperation
+- (instancetype)initWithReachability:(FXReachability*)reachability {
+    self = [super init];
+    if (self) {
+        _reachability = reachability;
+    }
+    return self;
+}
 
+- (void)executeAction:(id<WSActionProtocol>)action
+            inSession:(NSURLSession*)session
+             delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
+           completion:(WSAPICompletionBlock)completionBlock
+              failure:(WSAPIFailureBlock)failureBlock {
+    if ([self.reachability isReachable]) {
+        _action = action;
+        _delegate = delegate;
+        // Create session task
+        NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        [action postActionFailure];
+                                                        BLOCK(failureBlock, error);
+                                                    } else {
+                                                        [self handleResponseData:data
+                                                                          action:action
+                                                                      completion:completionBlock
+                                                                         failure:failureBlock];
+                                                    }
+                                                }];
+        [task resume];
+    }
+}
+
+#pragma mark - Accesers
+- (FXReachability*)reachability {
+    if (!_reachability) {
+        _reachability = [FXReachability sharedInstance];
+    }
+    return _reachability;
+}
+
+#pragma mark - Helpers
 - (NSMutableURLRequest *)requestForAction:(id<WSActionProtocol>)action {
     // Create Request
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[self urlFromAction:action] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:kDefaultTimeOut];
@@ -42,29 +84,6 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
     }
     
     return request;
-}
-
-- (void)executeAction:(id<WSActionProtocol>)action
-            inSession:(NSURLSession*)session
-             delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
-           completion:(WSAPICompletionBlock)completionBlock
-              failure:(WSAPIFailureBlock)failureBlock {
-    _action = action;
-    _delegate = delegate;
-    // Create session task
-    NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
-                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                if (error) {
-                                                    [action postActionFailure];
-                                                    BLOCK(failureBlock, error);
-                                                } else {
-                                                    [self handleResponseData:data
-                                                                      action:action
-                                                                  completion:completionBlock
-                                                                     failure:failureBlock];
-                                                }
-                                            }];
-    [task resume];
 }
 
 - (void)handleResponseData:(id)data

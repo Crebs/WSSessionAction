@@ -11,6 +11,8 @@
 #import "WSSessionTaskDataOperation.h"
 #import "WSActionProtocol.h"
 
+#import <OCMock/OCMock.h>
+
 @interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol, WSSessionTaskDataOperationProtocol>
 @property (nonatomic, strong, readonly) WSSessionTaskDataOperation *sessionOperation;
 @property (nonatomic, strong, readonly) NSDictionary *mockResponse;

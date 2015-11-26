@@ -17,11 +17,18 @@ typedef NS_ENUM(NSUInteger, WSAPIErrorCode) {
 
 extern NSString * const WSAPIErrorDomain;
 
-@protocol WSActionProtocol;
+@class FXReachability;
 
+@protocol WSActionProtocol;
 @protocol WSSessionTaskDataOperationProtocol;
 
 @interface WSSessionTaskDataOperation : NSOperation
+
+/* Initialize with a reachability.
+ @param reachability Reachability object
+ @return new instance with an reachability object.
+ */
+- (instancetype)initWithReachability:(FXReachability*)reachability;
 
 - (void)executeAction:(id<WSActionProtocol>)action
             inSession:(NSURLSession*)session
