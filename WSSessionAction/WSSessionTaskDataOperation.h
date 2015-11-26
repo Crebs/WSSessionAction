@@ -23,11 +23,11 @@ extern NSString * const WSAPIErrorDomain;
 
 @interface WSSessionTaskDataOperation : NSOperation
 
-- (instancetype)initWithSession:(NSURLSession*)session
-                       delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
-                         action:(id<WSActionProtocol>)action
-                     completion:(WSAPICompletionBlock)completionBlock
-                        failure:(WSAPIFailureBlock)failureBlock;
+- (void)executeAction:(id<WSActionProtocol>)action
+            inSession:(NSURLSession*)session
+             delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
+           completion:(WSAPICompletionBlock)completionBlock
+              failure:(WSAPIFailureBlock)failureBlock;
 
 @property (nonatomic, weak) id<WSSessionTaskDataOperationProtocol>delegate;
 

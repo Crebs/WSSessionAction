@@ -44,30 +44,27 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
     return request;
 }
 
-- (instancetype)initWithSession:(NSURLSession*)session
-                       delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
-                         action:(id<WSActionProtocol>)action
-                     completion:(WSAPICompletionBlock)completionBlock
-                        failure:(WSAPIFailureBlock)failureBlock {
-    if (self = [super init]) {
-        _action = action;
-        _delegate = delegate;
-        // Create session task
-        NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                [action postActionFailure];
-                BLOCK(failureBlock, error);
-            } else {
-                [self handleResponseData:data
-                                  action:action
-                              completion:completionBlock
-                                 failure:failureBlock];
-            }
-        }];
-        [task resume];
-    }
-    return self;
+- (void)executeAction:(id<WSActionProtocol>)action
+            inSession:(NSURLSession*)session
+             delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
+           completion:(WSAPICompletionBlock)completionBlock
+              failure:(WSAPIFailureBlock)failureBlock {
+    _action = action;
+    _delegate = delegate;
+    // Create session task
+    NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
+                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                if (error) {
+                                                    [action postActionFailure];
+                                                    BLOCK(failureBlock, error);
+                                                } else {
+                                                    [self handleResponseData:data
+                                                                      action:action
+                                                                  completion:completionBlock
+                                                                     failure:failureBlock];
+                                                }
+                                            }];
+    [task resume];
 }
 
 - (void)handleResponseData:(id)data

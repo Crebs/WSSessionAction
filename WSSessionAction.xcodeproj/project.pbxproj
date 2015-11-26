@@ -19,6 +19,7 @@
 		237BDD9B1BBC88FE00516086 /* NSMutableURLRequest+WSAPITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD981BBC88FE00516086 /* NSMutableURLRequest+WSAPITests.m */; };
 		237BDD9D1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 237BDD9A1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m */; };
 		237BDD9F1BBC891F00516086 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 237BDD9E1BBC891F00516086 /* Cartfile */; };
+		237DD2651C06A6A100F8F736 /* WSFXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD2641C06A6A100F8F736 /* WSFXReachability.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		237BDD981BBC88FE00516086 /* NSMutableURLRequest+WSAPITests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+WSAPITests.m"; sourceTree = "<group>"; };
 		237BDD9A1BBC88FE00516086 /* WSSessionTaskDataOperationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSSessionTaskDataOperationTests.m; sourceTree = "<group>"; };
 		237BDD9E1BBC891F00516086 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		237DD2641C06A6A100F8F736 /* WSFXReachability.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WSFXReachability.framework; path = Carthage/Build/iOS/WSFXReachability.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237DD2651C06A6A100F8F736 /* WSFXReachability.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +74,7 @@
 		237BDD661BBC88CA00516086 = {
 			isa = PBXGroup;
 			children = (
+				237DD2641C06A6A100F8F736 /* WSFXReachability.framework */,
 				237BDD9E1BBC891F00516086 /* Cartfile */,
 				237BDD721BBC88CA00516086 /* WSSessionAction */,
 				237BDD7F1BBC88CA00516086 /* WSSessionActionTests */,
@@ -155,6 +159,7 @@
 				237BDD6C1BBC88CA00516086 /* Frameworks */,
 				237BDD6D1BBC88CA00516086 /* Headers */,
 				237BDD6E1BBC88CA00516086 /* Resources */,
+				237DD2661C06A6A700F8F736 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -235,6 +240,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		237DD2661C06A6A700F8F736 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/WSFXReachability.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		237BDD6B1BBC88CA00516086 /* Sources */ = {
@@ -363,6 +385,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = WSSessionAction/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -379,6 +405,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = WSSessionAction/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

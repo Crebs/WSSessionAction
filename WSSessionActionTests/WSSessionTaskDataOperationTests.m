@@ -34,14 +34,15 @@
                                                      error:&error];
     _mockResponse = @{@"data": data};
     __block BOOL successCompletion = NO;
-    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
-                                                                                       delegate:self
-                                                                                         action:self
-                                                                                     completion:^(id response) {
-        successCompletion = YES;
-    } failure:^(NSError *error) {
-        XCTAssertNil(error);
-    }];
+    WSSessionTaskDataOperation *operation = [WSSessionTaskDataOperation new];
+    [operation executeAction:self
+                   inSession:(NSURLSession*)self
+                    delegate:self
+                  completion:^(id response) {
+                      successCompletion = YES;
+                  } failure:^(NSError *error) {
+                      XCTAssertNil(error);
+                  }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(successCompletion);
 }
@@ -49,15 +50,16 @@
 - (void)testInitWithSession_WhenRequestResponseDataIsNotJSON_ShouldCallFailureBlock {
     _mockResponse = @{@"data": [@"<html>data here</html>" dataUsingEncoding:NSUTF8StringEncoding]};
     __block BOOL errorComplete = NO;
-    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
-                                                                                       delegate:self
-                                                                                         action:self
-                                                                                     completion:^(id response) {
-                                                                                         XCTAssertFalse(true);
-                                                                                     } failure:^(NSError *error) {
-                                                                                         errorComplete = YES;
-                                                                                         XCTAssertNotNil(error);
-                                                                                     }];
+    WSSessionTaskDataOperation *operation = [WSSessionTaskDataOperation new];
+    [operation executeAction:self
+                   inSession:(NSURLSession*)self
+                    delegate:self
+                  completion:^(id response) {
+        XCTAssertFalse(true);
+    } failure:^(NSError *error) {
+        errorComplete = YES;
+        XCTAssertNotNil(error);
+    }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
 }
@@ -65,16 +67,17 @@
 - (void)testInitWithSession_WhenRequestFailure_ShouldCallFailureBlock {
     _mockResponse = @{@"data": [NSNull null]};
     __block BOOL errorComplete = NO;
-    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithSession:(NSURLSession*)self
-                                                                                       delegate:self
-                                                                                         action:self
-                                                                                     completion:^(id response) {
-                                                                                         XCTAssertFalse(true);
-                                                                                     } failure:^(NSError *error) {
-                                                                                         errorComplete = YES;
-                                                                                         XCTAssertNotNil(error);
-                                                                                         XCTAssertEqualObjects(error.domain, @"MockDomain");
-                                                                                     }];
+    WSSessionTaskDataOperation *operation = [WSSessionTaskDataOperation new];
+    [operation executeAction:self
+                   inSession:(NSURLSession*)self
+                    delegate:self
+                  completion:^(id response) {
+        XCTAssertFalse(true);
+    } failure:^(NSError *error) {
+        errorComplete = YES;
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(error.domain, @"MockDomain");
+    }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
 }
