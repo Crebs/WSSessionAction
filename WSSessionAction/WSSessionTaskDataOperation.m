@@ -57,6 +57,11 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
                                                     }
                                                 }];
         [task resume];
+    } else {
+        NSError *reachabilityError = [NSError errorWithDomain:WSAPIErrorDomain
+                                                         code:WSAPIErrorCodeNotReachable
+                                                     userInfo:@{@"Reachability": self.reachability}];
+        BLOCK(failureBlock, reachabilityError);
     }
 }
 

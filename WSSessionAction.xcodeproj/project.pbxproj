@@ -21,6 +21,7 @@
 		237BDD9F1BBC891F00516086 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 237BDD9E1BBC891F00516086 /* Cartfile */; };
 		237DD2651C06A6A100F8F736 /* WSFXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD2641C06A6A100F8F736 /* WSFXReachability.framework */; };
 		237DD26B1C06B06400F8F736 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD26A1C06B06400F8F736 /* libOCMock.a */; };
+		237DD26C1C06B2E200F8F736 /* WSFXReachability.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 237DD2641C06A6A100F8F736 /* WSFXReachability.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237DD26C1C06B2E200F8F736 /* WSFXReachability.framework in Frameworks */,
 				237DD26B1C06B06400F8F736 /* libOCMock.a in Frameworks */,
 				237BDD7C1BBC88CA00516086 /* WSSessionAction.framework in Frameworks */,
 			);
@@ -189,6 +191,7 @@
 				237BDD771BBC88CA00516086 /* Sources */,
 				237BDD781BBC88CA00516086 /* Frameworks */,
 				237BDD791BBC88CA00516086 /* Resources */,
+				237DD26D1C06B2E900F8F736 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -255,6 +258,20 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		237DD2661C06A6A700F8F736 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/WSFXReachability.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		237DD26D1C06B2E900F8F736 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -460,7 +477,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/WSSessionActionTests/OCMock",
 				);
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -480,7 +497,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/WSSessionActionTests/OCMock",
 				);
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

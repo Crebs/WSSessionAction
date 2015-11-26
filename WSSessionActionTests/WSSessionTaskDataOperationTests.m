@@ -11,6 +11,7 @@
 #import "WSSessionTaskDataOperation.h"
 #import "WSActionProtocol.h"
 
+#import <WSFXReachability/WSFXReachability.h>
 #import <OCMock/OCMock.h>
 
 @interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol, WSSessionTaskDataOperationProtocol>
@@ -82,6 +83,23 @@
     }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
+}
+
+- (void)testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock {
+    FXReachability *reachability = [FXReachability new];
+    id mockReachability = [OCMockObject partialMockForObject:reachability];
+    [[[mockReachability stub] andReturnValue:OCMOCK_VALUE(NO)] isReachable];
+    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithReachability:mockReachability];
+    [operation executeAction:self
+                   inSession:(NSURLSession*)self
+                    delegate:self
+                  completion:^(id response) {
+                      XCTAssertFalse(true);
+                  } failure:^(NSError *error) {
+                      XCTAssertNotNil(error);
+                      XCTAssertEqual(WSAPIErrorCodeNotReachable, [error code]);
+                      XCTAssertEqualObjects(WSAPIErrorDomain, [error domain]);
+                  }];
 }
 
 #pragma mark - WSSessionTaskDataOperationDelegate 
