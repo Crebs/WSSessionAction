@@ -69,7 +69,7 @@
 
 - (void)testInitWithSession_WhenRequestFailure_ShouldCallFailureBlock {
     _mockResponse = @{@"data": [NSNull null]};
-    __block BOOL errorComplete = NO;
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(@selector(testInitWithSession_WhenRequestFailure_ShouldCallFailureBlock))];
     WSSessionTaskDataOperation *operation = [WSSessionTaskDataOperation new];
     [operation executeAction:self
                    inSession:(NSURLSession*)self
@@ -77,15 +77,18 @@
                   completion:^(id response) {
         XCTAssertFalse(true);
     } failure:^(NSError *error) {
-        errorComplete = YES;
         XCTAssertNotNil(error);
         XCTAssertEqualObjects(error.domain, @"MockDomain");
+        [expectation fulfill];
     }];
-    XCTAssertNotNil(operation);
-    XCTAssertTrue(errorComplete);
+    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
+        XCTAssertNil(error);
+    }];
 }
 
 - (void)testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock {
+    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(@selector(testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock))];
+    
     FXReachability *reachability = [FXReachability new];
     id mockReachability = [OCMockObject partialMockForObject:reachability];
     [[[mockReachability stub] andReturnValue:OCMOCK_VALUE(NO)] isReachable];
@@ -99,7 +102,13 @@
                       XCTAssertNotNil(error);
                       XCTAssertEqual(WSAPIErrorCodeNotReachable, [error code]);
                       XCTAssertEqualObjects(WSAPIErrorDomain, [error domain]);
+                      [expectation fulfill];
                   }];
+    
+    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
+        XCTAssertNil(error);
+    }];
+    
 }
 
 #pragma mark - WSSessionTaskDataOperationDelegate 
