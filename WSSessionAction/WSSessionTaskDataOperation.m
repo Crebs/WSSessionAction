@@ -12,6 +12,7 @@
 #import "NSMutableURLRequest+WSAPI.h"
 
 #import <WSFXReachability/FXReachability.h>
+#import <UIKit/UIKit.h>
 
 #define kPoductionBaseURL @"api.wellspentapp.com"
 #define kPoductionScheme @"https"
@@ -40,9 +41,10 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
              delegate:(id<WSSessionTaskDataOperationProtocol>)delegate
            completion:(WSAPICompletionBlock)completionBlock
               failure:(WSAPIFailureBlock)failureBlock {
+    _action = action;
+    _delegate = delegate;
+    // Make sure network is reachable
     if ([self.reachability isReachable]) {
-        _action = action;
-        _delegate = delegate;
         // Create session task
         NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -61,6 +63,9 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
         NSError *reachabilityError = [NSError errorWithDomain:WSAPIErrorDomain
                                                          code:WSAPIErrorCodeNotReachable
                                                      userInfo:@{@"Reachability": self.reachability}];
+        if ([self.delegate respondsToSelector:@selector(handleNetworkNotReachable:)]) {
+            [self.delegate handleNetworkNotReachable:reachabilityError];
+        }
         BLOCK(failureBlock, reachabilityError);
     }
 }
@@ -119,12 +124,13 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 - (BOOL)isValidResponseData:(NSDictionary*)dict
                       action:(id<WSActionProtocol>)action
                       error:(NSError *__autoreleasing *)error{
+    BOOL valid = YES;
     if ([self.delegate respondsToSelector:@selector(validateResponseData:action:error:)]) {
-        [self.delegate validateResponseData:dict
-                                     action:action
-                                      error:error];
+        valid = [self.delegate validateResponseData:dict
+                                             action:action
+                                              error:error];
     }
-    return *error == nil;
+    return valid;
 }
 
 - (NSDictionary*)JSONfromResponseData:(NSData*)data

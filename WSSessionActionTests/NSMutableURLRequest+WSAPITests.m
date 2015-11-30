@@ -46,7 +46,6 @@
     XCTAssertEqual([self.request.allHTTPHeaderFields count], [dict count] + [additionalHeaders count]);
 }
 
-
 - (void)testSetHeaders_WithNoPreviouslyHeadersItems_ShouldAddHeaders {
     XCTAssertEqual([self.request.allHTTPHeaderFields count], 0);
     NSDictionary *headerItems = @{@"KeyOne":@"ValueOne", @"KeyTwo": @"ValueTwo"};

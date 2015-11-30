@@ -42,15 +42,41 @@ extern NSString * const WSAPIErrorDomain;
 
 @protocol WSSessionTaskDataOperationProtocol <NSObject>
 @required
+/* Object conforming to this protocol is required to give the baseURL
+ @return The base URL to make the request to
+ */
 - (NSString*)baseURL;
+
+/* Object conforming to this protocol is required to give the scheme for the request
+ @return The scheme to make the request to
+ */
 - (NSString*)scheme;
 
+/* Object conforming to this protocol is responsible for handling state where network is not reachable
+ @param error NSError object specifing the error associated with the network not being reachable.
+ */
+- (void)handleNetworkNotReachable:(NSError*)error;
+
 @optional
+/* Optionally the object confroming to this protocol can handle an invalid token by implementing this method
+ @param operation Operation object that with invalid token on request
+ @param action Sent action that has an invalid token
+ @param completionBlock
+ @param failureBlock
+ */
 - (void)taskDataOperation:(WSSessionTaskDataOperation*)operation
      invalidTokenOnAction:(id<WSActionProtocol>)action
                completion:(WSAPICompletionBlock)completionBlock
                   failure:(WSAPIFailureBlock)failureBlock;
-- (void)validateResponseData:(NSDictionary*)data
+
+/* Optionally the object conforming to this protocol can validate response data by implementing this method
+ @param data The data to validate
+ @param action The action under validation
+ @param error Object can send assign an error to this param to pass up the stack.
+ @return Return True if valid data for the action, false otherwise.
+ */
+- (BOOL)validateResponseData:(NSDictionary*)data
                       action:(id<WSActionProtocol>)action
                        error:(NSError**)error;
+
 @end

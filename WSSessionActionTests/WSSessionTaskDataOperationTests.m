@@ -17,6 +17,8 @@
 @interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol, WSSessionTaskDataOperationProtocol>
 @property (nonatomic, strong, readonly) WSSessionTaskDataOperation *sessionOperation;
 @property (nonatomic, strong, readonly) NSDictionary *mockResponse;
+@property (nonatomic, assign) BOOL networkNotReachableCalled;
+@property (nonatomic, assign) BOOL networkReachShouldbeCalled;
 @end
 
 @implementation WSSessionTaskDataOperationTests
@@ -88,7 +90,7 @@
 
 - (void)testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock {
     XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(@selector(testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock))];
-    
+    self.networkReachShouldbeCalled = YES;
     FXReachability *reachability = [FXReachability new];
     id mockReachability = [OCMockObject partialMockForObject:reachability];
     [[[mockReachability stub] andReturnValue:OCMOCK_VALUE(NO)] isReachable];
@@ -102,6 +104,7 @@
                       XCTAssertNotNil(error);
                       XCTAssertEqual(WSAPIErrorCodeNotReachable, [error code]);
                       XCTAssertEqualObjects(WSAPIErrorDomain, [error domain]);
+                      XCTAssertTrue(self.networkNotReachableCalled);
                       [expectation fulfill];
                   }];
     
@@ -118,6 +121,15 @@
 
 - (NSString*)scheme {
     return @"bar";
+}
+
+- (void)handleNetworkNotReachable:(NSError*)reachable {
+    if (self.networkReachShouldbeCalled == NO) {
+        XCTAssert(@"network not reachable shouldn't be called");
+    } else {
+        self.networkNotReachableCalled = YES;
+    }
+    
 }
 #pragma mark - Helper
 - (id)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
@@ -148,7 +160,4 @@
 - (void)resume {
     
 }
-
-// TODO: test Delegate
-
 @end
