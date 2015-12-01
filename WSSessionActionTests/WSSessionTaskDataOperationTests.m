@@ -60,13 +60,34 @@
                    inSession:(NSURLSession*)self
                     delegate:self
                   completion:^(id response) {
-        XCTAssertFalse(true);
-    } failure:^(NSError *error) {
-        errorComplete = YES;
-        XCTAssertNotNil(error);
-    }];
+                      XCTAssertFalse(true);
+                  } failure:^(NSError *error) {
+                      errorComplete = YES;
+                      XCTAssertNotNil(error);
+                  }];
     XCTAssertNotNil(operation);
     XCTAssertTrue(errorComplete);
+}
+
+- (void)testInitWithSession_WhenInvalidData_ShouldCallFailureBlock {
+    NSError *error;
+    NSData* data = [NSJSONSerialization dataWithJSONObject:@{@"data" :@"some invalid data"}
+                                                   options:0
+                                                     error:&error];
+    _mockResponse = @{@"data": data};
+    WSSessionTaskDataOperation *operation = [WSSessionTaskDataOperation new];
+    [operation executeAction:self
+                   inSession:(NSURLSession*)self
+                    delegate:self
+                  completion:^(id response) {
+                      XCTAssert(@"shouldn't successed");
+                  } failure:^(NSError *error) {
+                      XCTAssertNotNil(error);
+                      XCTAssertEqualObjects(@"MockError", error.domain);
+                      XCTAssertEqualObjects(@{@"error_info": @"mock_error"}, error.userInfo);
+                      XCTAssertEqual(-1, error.code);
+                  }];
+    XCTAssertNotNil(operation);
 }
 
 - (void)testInitWithSession_WhenRequestFailure_ShouldCallFailureBlock {
@@ -77,12 +98,12 @@
                    inSession:(NSURLSession*)self
                     delegate:self
                   completion:^(id response) {
-        XCTAssertFalse(true);
-    } failure:^(NSError *error) {
-        XCTAssertNotNil(error);
-        XCTAssertEqualObjects(error.domain, @"MockDomain");
-        [expectation fulfill];
-    }];
+                      XCTAssertFalse(true);
+                  } failure:^(NSError *error) {
+                      XCTAssertNotNil(error);
+                      XCTAssertEqualObjects(error.domain, @"MockDomain");
+                      [expectation fulfill];
+                  }];
     [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
     }];
@@ -111,10 +132,9 @@
     [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
         XCTAssertNil(error);
     }];
-    
 }
 
-#pragma mark - WSSessionTaskDataOperationDelegate 
+#pragma mark - WSSessionTaskDataOperationDelegate
 - (NSString*)baseURL {
     return @"foo.com";
 }
@@ -129,8 +149,21 @@
     } else {
         self.networkNotReachableCalled = YES;
     }
-    
 }
+
+- (BOOL)validateResponseData:(NSDictionary *)data
+                      action:(id<WSActionProtocol>)action
+                       error:(NSError *__autoreleasing *)error {
+    BOOL valid = YES;
+    if ([data[@"data"] isEqualToString:@"some invalid data"]) {
+        valid = NO;
+        *error = [NSError errorWithDomain:@"MockError"
+                                     code:-1
+                                 userInfo:@{@"error_info": @"mock_error"}];
+    }
+    return valid;
+}
+
 #pragma mark - Helper
 - (id)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(void (^)(NSData *data, NSURLResponse *response, NSError *error))completionHandler {
     NSError *error;
