@@ -11,7 +11,6 @@
 #import "WSActionProtocol.h"
 #import "NSMutableURLRequest+WSAPI.h"
 
-#import <WSFXReachability/FXReachability.h>
 #import <UIKit/UIKit.h>
 
 #define kPoductionBaseURL @"api.wellspentapp.com"
@@ -23,18 +22,10 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
 
 @interface WSSessionTaskDataOperation ()
 @property (nonatomic, strong) id <WSActionProtocol>action;
-@property (nonatomic, strong) FXReachability *reachability;
 @end
 
 
 @implementation WSSessionTaskDataOperation
-- (instancetype)initWithReachability:(FXReachability*)reachability {
-    self = [super init];
-    if (self) {
-        _reachability = reachability;
-    }
-    return self;
-}
 
 - (void)executeAction:(id<WSActionProtocol>)action
             inSession:(NSURLSession*)session
@@ -43,39 +34,20 @@ NSString * const WSAPIErrorDomain = @"WSAPIErrorDomain";
               failure:(WSAPIFailureBlock)failureBlock {
     _action = action;
     _delegate = delegate;
-    // Make sure network is reachable
-    if ([self.reachability isReachable]) {
-        // Create session task
-        NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
-                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                    if (error) {
-                                                        [action postActionFailure];
-                                                        BLOCK(failureBlock, error);
-                                                    } else {
-                                                        [self handleResponseData:data
-                                                                          action:action
-                                                                      completion:completionBlock
-                                                                         failure:failureBlock];
-                                                    }
-                                                }];
-        [task resume];
-    } else {
-        NSError *reachabilityError = [NSError errorWithDomain:WSAPIErrorDomain
-                                                         code:WSAPIErrorCodeNotReachable
-                                                     userInfo:@{@"Reachability": self.reachability}];
-        if ([self.delegate respondsToSelector:@selector(handleNetworkNotReachable:)]) {
-            [self.delegate handleNetworkNotReachable:reachabilityError];
-        }
-        BLOCK(failureBlock, reachabilityError);
-    }
-}
-
-#pragma mark - Accesers
-- (FXReachability*)reachability {
-    if (!_reachability) {
-        _reachability = [FXReachability sharedInstance];
-    }
-    return _reachability;
+    // Create session task
+    NSURLSessionDataTask* task = [session dataTaskWithRequest:[self requestForAction:action]
+                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                if (error) {
+                                                    [action postActionFailure];
+                                                    BLOCK(failureBlock, error);
+                                                } else {
+                                                    [self handleResponseData:data
+                                                                      action:action
+                                                                  completion:completionBlock
+                                                                     failure:failureBlock];
+                                                }
+                                            }];
+    [task resume];
 }
 
 #pragma mark - Helpers

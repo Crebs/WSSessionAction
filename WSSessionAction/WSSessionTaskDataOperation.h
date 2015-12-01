@@ -17,18 +17,10 @@ typedef NS_ENUM(NSUInteger, WSAPIErrorCode) {
 
 extern NSString * const WSAPIErrorDomain;
 
-@class FXReachability;
-
 @protocol WSActionProtocol;
 @protocol WSSessionTaskDataOperationProtocol;
 
 @interface WSSessionTaskDataOperation : NSOperation
-
-/* Initialize with a reachability.
- @param reachability Reachability object
- @return new instance with an reachability object.
- */
-- (instancetype)initWithReachability:(FXReachability*)reachability;
 
 - (void)executeAction:(id<WSActionProtocol>)action
             inSession:(NSURLSession*)session
@@ -51,11 +43,6 @@ extern NSString * const WSAPIErrorDomain;
  @return The scheme to make the request to
  */
 - (NSString*)scheme;
-
-/* Object conforming to this protocol is responsible for handling state where network is not reachable
- @param error NSError object specifing the error associated with the network not being reachable.
- */
-- (void)handleNetworkNotReachable:(NSError*)error;
 
 @optional
 /* Optionally the object confroming to this protocol can handle an invalid token by implementing this method

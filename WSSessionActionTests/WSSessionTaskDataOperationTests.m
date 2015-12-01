@@ -11,14 +11,9 @@
 #import "WSSessionTaskDataOperation.h"
 #import "WSActionProtocol.h"
 
-#import <WSFXReachability/WSFXReachability.h>
-#import <OCMock/OCMock.h>
-
 @interface WSSessionTaskDataOperationTests : XCTestCase <WSActionProtocol, WSSessionTaskDataOperationProtocol>
 @property (nonatomic, strong, readonly) WSSessionTaskDataOperation *sessionOperation;
 @property (nonatomic, strong, readonly) NSDictionary *mockResponse;
-@property (nonatomic, assign) BOOL networkNotReachableCalled;
-@property (nonatomic, assign) BOOL networkReachShouldbeCalled;
 @end
 
 @implementation WSSessionTaskDataOperationTests
@@ -109,31 +104,6 @@
     }];
 }
 
-- (void)testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock {
-    XCTestExpectation *expectation = [self expectationWithDescription:NSStringFromSelector(@selector(testTaskDataOperation_WithNoReachability_ShouldCallFailureBlock))];
-    self.networkReachShouldbeCalled = YES;
-    FXReachability *reachability = [FXReachability new];
-    id mockReachability = [OCMockObject partialMockForObject:reachability];
-    [[[mockReachability stub] andReturnValue:OCMOCK_VALUE(NO)] isReachable];
-    WSSessionTaskDataOperation *operation = [[WSSessionTaskDataOperation alloc] initWithReachability:mockReachability];
-    [operation executeAction:self
-                   inSession:(NSURLSession*)self
-                    delegate:self
-                  completion:^(id response) {
-                      XCTAssertFalse(true);
-                  } failure:^(NSError *error) {
-                      XCTAssertNotNil(error);
-                      XCTAssertEqual(WSAPIErrorCodeNotReachable, [error code]);
-                      XCTAssertEqualObjects(WSAPIErrorDomain, [error domain]);
-                      XCTAssertTrue(self.networkNotReachableCalled);
-                      [expectation fulfill];
-                  }];
-    
-    [self waitForExpectationsWithTimeout:10 handler:^(NSError * _Nullable error) {
-        XCTAssertNil(error);
-    }];
-}
-
 #pragma mark - WSSessionTaskDataOperationDelegate
 - (NSString*)baseURL {
     return @"foo.com";
@@ -141,14 +111,6 @@
 
 - (NSString*)scheme {
     return @"bar";
-}
-
-- (void)handleNetworkNotReachable:(NSError*)reachable {
-    if (self.networkReachShouldbeCalled == NO) {
-        XCTAssert(@"network not reachable shouldn't be called");
-    } else {
-        self.networkNotReachableCalled = YES;
-    }
 }
 
 - (BOOL)validateResponseData:(NSDictionary *)data
